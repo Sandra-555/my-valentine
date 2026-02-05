@@ -20,18 +20,17 @@ body {
 /* Card */
 .card {
   position: relative;
-  background: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.2);
   backdrop-filter: blur(12px);
-  padding: 40px 30px 80px;
+  padding: 40px 30px 90px;
   border-radius: 22px;
   text-align: center;
   color: white;
   box-shadow: 0 25px 45px rgba(0,0,0,0.25);
-  max-width: 90%;
   width: 360px;
+  max-width: 90%;
 }
 
-/* Text */
 h1 {
   font-size: 2.6rem;
   margin-bottom: 10px;
@@ -50,7 +49,6 @@ p {
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 #yes {
@@ -62,10 +60,6 @@ p {
   background: white;
   color: #ff4d6d;
   position: absolute;
-}
-
-#yes:hover {
-  transform: scale(1.05);
 }
 
 /* Floating hearts */
@@ -121,13 +115,13 @@ p {
 /* Names */
 const params = new URLSearchParams(window.location.search);
 const from = params.get("from") || "Someone";
-const to = "Pavii"; // FIXED NAME ❤️
+const to = "Pavii";
 
 /* Question */
 document.getElementById("question").innerText =
   `${to}, will you be my Valentine?`;
 
-/* 💌 Custom final message */
+/* Final message */
 const finalMessage = `
 💖 Yesss! 💖
 
@@ -138,7 +132,7 @@ just you, choosing me, again and again.
 Happy Valentine's Day, ${to} 🌷
 `;
 
-/* YES button */
+/* YES */
 document.getElementById("yes").onclick = () => {
   document.getElementById("card").innerHTML = `
     <h1>💘 It’s a Yes! 💘</h1>
@@ -151,15 +145,11 @@ document.getElementById("yes").onclick = () => {
   `;
 };
 
-/* NO button runaway (FIXED) */
+/* NO — GUARANTEED RUNAWAY */
 const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
 
-// initial position
-noBtn.style.left = "55%";
-noBtn.style.top = "68%";
-
-noBtn.addEventListener("mouseenter", () => {
+function moveNoButton() {
   const cardRect = card.getBoundingClientRect();
   const btnRect = noBtn.getBoundingClientRect();
 
@@ -171,6 +161,18 @@ noBtn.addEventListener("mouseenter", () => {
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
+}
+
+// initial position
+moveNoButton();
+
+// desktop
+noBtn.addEventListener("mouseenter", moveNoButton);
+
+// mobile
+noBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  moveNoButton();
 });
 
 /* Floating hearts */
