@@ -11,57 +11,100 @@ body {
   height: 100vh;
   background: linear-gradient(135deg, #ff9a9e, #fad0c4);
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-family: Arial, sans-serif;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
   overflow: hidden;
 }
 
-.box {
+/* Card */
+.card {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px);
+  padding: 40px 30px;
+  border-radius: 22px;
   text-align: center;
   color: white;
+  box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+  max-width: 90%;
 }
 
+/* Text */
 h1 {
-  font-size: 3rem;
+  font-size: 2.6rem;
   margin-bottom: 10px;
 }
 
 p {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  margin: 15px 0 30px;
+  line-height: 1.5;
 }
 
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#yes {
+  background: #ff4d6d;
+  color: white;
+}
+
+#no {
+  background: white;
+  color: #ff4d6d;
+  position: relative;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Floating hearts */
 .heart {
   position: fixed;
   bottom: -20px;
-  width: 20px;
-  height: 20px;
-  background: red;
+  width: 18px;
+  height: 18px;
+  background: #ff4d6d;
   transform: rotate(-45deg);
-  animation: rise 6s linear infinite;
+  animation: float 6s linear infinite;
+  opacity: 0.8;
 }
 
 .heart::before,
 .heart::after {
   content: "";
   position: absolute;
-  width: 20px;
-  height: 20px;
-  background: red;
+  width: 18px;
+  height: 18px;
+  background: #ff4d6d;
   border-radius: 50%;
 }
 
 .heart::before {
-  top: -10px;
+  top: -9px;
   left: 0;
 }
 
 .heart::after {
-  left: 10px;
+  left: 9px;
   top: 0;
 }
 
-@keyframes rise {
+@keyframes float {
   from { transform: translateY(0) rotate(-45deg); opacity: 1; }
   to { transform: translateY(-120vh) rotate(-45deg); opacity: 0; }
 }
@@ -70,26 +113,66 @@ p {
 
 <body>
 
-<div class="box">
+<div class="card" id="card">
   <h1>💘 My Valentine</h1>
-  <p id="text"></p>
+  <p id="question"></p>
+
+  <div class="buttons" id="buttons">
+    <button id="yes">Yes 💖</button>
+    <button id="no">No 😶</button>
+  </div>
 </div>
 
 <script>
+/* Read URL params */
 const params = new URLSearchParams(window.location.search);
 const from = params.get("from") || "Someone";
 const to = params.get("to") || "Someone Special";
 
-document.getElementById("text").innerText =
-  "From " + from + " ❤️ To " + to;
+/* Question text */
+document.getElementById("question").innerText =
+  `${to}, will you be my Valentine?`;
 
+/* 💌 CUSTOM FINAL MESSAGE — EDIT THIS */
+const finalMessage = `
+💖 Yesss! 💖
+
+Every moment feels softer knowing it's you.
+I don't need grand promises —
+just you, choosing me, again and again.
+
+Happy Valentine's Day, ${to} 🌷
+`;
+
+/* YES button */
+document.getElementById("yes").onclick = () => {
+  document.getElementById("card").innerHTML = `
+    <h1>💘 It’s a Yes! 💘</h1>
+    <p style="white-space: pre-line; font-size: 1.25rem;">
+      ${finalMessage}
+    </p>
+    <p style="margin-top: 18px;">
+      — always yours,<br><b>${from}</b> 💞
+    </p>
+  `;
+};
+
+/* NO button runs away */
+const noBtn = document.getElementById("no");
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 200 - 100;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+/* Floating hearts */
 setInterval(() => {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.style.left = Math.random() * 100 + "vw";
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 6000);
-}, 300);
+}, 350);
 </script>
 
 </body>
